@@ -1,0 +1,43 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": ["unused-imports"],
+  "rules": {
+    "semi": "off",
+    "curly": "off",
+    "jsx-quotes": "off",
+    "comma-dangle": "off",
+    "no-unused-vars": "off",
+    "react/react-in-jsx-scope": "off",
+    "prettier/prettier": "warn",
+    "unused-imports/no-unused-imports": "error",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@next/next/no-html-link-for-pages": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "unused-imports/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "interface",
+        "format": ["PascalCase"],
+        "custom": { "regex": "^I[A-Z]", "match": true }
+      },
+      {
+        "selector": "typeAlias",
+        "format": ["PascalCase"],
+        "custom": { "regex": "^T[A-Z]", "match": true }
+      }
+    ]
+  }
+}

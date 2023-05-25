@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --colors-primary-50: 242, 245, 247;
+    --colors-primary-100: 230, 236, 239;
+    --colors-primary-200: 192, 207, 215;
+    --colors-primary-300: 154, 178, 191;
+    --colors-primary-400: 78, 120, 142;
+    --colors-primary-500: 2, 62, 94;
+    --colors-primary-600: 2, 56, 85;
+    --colors-primary-700: 2, 47, 71;
+    --colors-primary-800: 1, 37, 56;
+    --colors-primary-900: 1, 30, 46;
+
+    --colors-secondary-50: 254, 252, 247;
+    --colors-secondary-100: 254, 249, 239;
+    --colors-secondary-200: 251, 241, 215;
+    --colors-secondary-300: 249, 233, 191;
+    --colors-secondary-400: 245, 216, 142;
+    --colors-secondary-500: 240, 199, 94;
+    --colors-secondary-600: 216, 179, 85;
+    --colors-secondary-700: 180, 149, 71;
+    --colors-secondary-800: 144, 119, 56;
+    --colors-secondary-900: 118, 98, 46;
+
+    --colors-tertiary-50: 250, 250, 250;
+    --colors-tertiary-100: 245, 245, 245;
+    --colors-tertiary-200: 238, 238, 238;
+    --colors-tertiary-300: 224, 224, 224;
+    --colors-tertiary-400: 189, 189, 189;
+    --colors-tertiary-500: 158, 158, 158;
+    --colors-tertiary-600: 117, 117, 117;
+    --colors-tertiary-700: 97, 97, 97;
+    --colors-tertiary-800: 66, 66, 66;
+    --colors-tertiary-900: 33, 33, 33;
+
+    --colors-success-50: 148, 255, 204;
+    --colors-success-100: 127, 255, 194;
+    --colors-success-200: 86, 255, 174;
+    --colors-success-300: 46, 255, 155;
+    --colors-success-400: 5, 255, 135;
+    --colors-success-500: 0, 219, 114;
+    --colors-success-600: 0, 163, 85;
+    --colors-success-700: 0, 107, 56;
+    --colors-success-800: 0, 51, 26;
+    --colors-success-900: 0, 0, 0;
+
+    --colors-white-50: 255, 255, 255;
+    --colors-white-100: 255, 255, 255;
+    --colors-white-200: 255, 255, 255;
+    --colors-white-300: 255, 255, 255;
+    --colors-white-400: 255, 255, 255;
+    --colors-white-500: 255, 255, 255;
+    --colors-white-600: 255, 255, 255;
+    --colors-white-700: 255, 255, 255;
+    --colors-white-800: 255, 255, 255;
+    --colors-white-900: 255, 255, 255;
+  }
+
+  * {
+    /* outline: 1px solid red;
+    outline-offset: -1px; */
+  }
+
+  html {
+    font-size: 62.5%;
+  }
+
+  body {
+    @apply font-primary text-tertiary-600 text-md font-normal;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold text-tertiary-900;
+  }
+
+  h1 {
+    @apply text-h1;
+  }
+  h2 {
+    @apply text-h2;
+  }
+  h3 {
+    @apply text-h3;
+  }
+  h4 {
+    @apply text-h4;
+  }
+  h5 {
+    @apply text-h5;
+  }
+  h6 {
+    @apply text-h6;
+  }
+
+  /*? Scrollbar */
+
+  /* Works on Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.primary.400') theme(colors.white.500);
+  }
+
+  /* Works on Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: theme(colors.white.500);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: theme(colors.primary.400);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: theme(colors.primary.300);
+  }
+}

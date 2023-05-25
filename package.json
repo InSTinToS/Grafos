@@ -1,0 +1,37 @@
+{
+  "name": "front",
+  "version": "0.1.2",
+  "private": true,
+  "scripts": {
+    "build": "next build && next export",
+    "d": "clear && yarn dev",
+    "clear": "clear && rm -rf node_modules yarn-error.log .next out",
+    "start": "clear && yarn next build && yarn next start",
+    "dev": "next dev",
+    "git:clean": "git clean -fd",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "framer-motion": "^10.2.1",
+    "next": "^13.4.4-canary.11",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+    "@types/node": "18.14.4",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "autoprefixer": "^10.4.14",
+    "eslint": "8.35.0",
+    "eslint-config-next": "^13.4.3",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "postcss": "^8.4.21",
+    "prettier": "^2.8.4",
+    "tailwindcss": "^3.2.7",
+    "typescript": "4.9.5"
+  }
+}
