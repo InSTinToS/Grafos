@@ -1,30 +1,48 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { MouseEvent, useRef, useState } from 'react'
 
 import colors from 'src/styles/custom/colors'
 
-import { PanInfo, motion, useMotionValue } from 'framer-motion'
+import { MotionValue, PanInfo, motion, useMotionValue } from 'framer-motion'
 
-type TOnDrag = (event: any, info: PanInfo, vertex: any) => void
+type TOnDrag = (
+  event:
+    | globalThis.MouseEvent
+    | globalThis.TouchEvent
+    | globalThis.PointerEvent,
+  info: PanInfo,
+  vertex: MotionValue<IVertexMotion>
+) => void
+
+interface IVertexMotion {
+  point: { x: number; y: number }
+  offset: { x: number; y: number }
+  center: { x: number; y: number }
+}
+
+type TOnMouseDown = (
+  event: MouseEvent<HTMLDivElement>,
+  vertex: MotionValue<IVertexMotion>
+) => void
 
 export const Home = () => {
   const [pathD, setPathD] = useState('')
   const sectionRef = useRef<HTMLDivElement>(null)
 
-  const firstVertex = useMotionValue({
+  const firstVertex = useMotionValue<IVertexMotion>({
     point: { x: 0, y: 0 },
     offset: { x: 0, y: 0 },
     center: { x: 0, y: 0 }
   })
 
-  const secondVertex = useMotionValue({
+  const secondVertex = useMotionValue<IVertexMotion>({
     point: { x: 0, y: 0 },
     offset: { x: 0, y: 0 },
     center: { x: 0, y: 0 }
   })
 
-  const updatePosition = (vertex: any) => {
+  const updatePosition = (vertex: MotionValue<IVertexMotion>) => {
     const halfSize = 32 / 2
     const offsetX = vertex.get().offset.x
     const offsetY = vertex.get().offset.y
@@ -49,7 +67,7 @@ export const Home = () => {
     `)
   }
 
-  const onDrag: TOnDrag = (event, info, vertex) => {
+  const onDrag: TOnDrag = (_event, info, vertex) => {
     const section = sectionRef.current?.getBoundingClientRect()
 
     if (!section?.width) return
@@ -64,14 +82,12 @@ export const Home = () => {
     updatePosition(vertex)
   }
 
-  const onMouseDown: any = (event: any, vertex: any) => {
+  const onMouseDown: TOnMouseDown = (event, vertex) => {
     vertex.set({
       ...vertex.get(),
       offset: { x: event.nativeEvent.offsetX, y: event.nativeEvent.offsetY }
     })
   }
-
-  console.log({ '1': firstVertex.get().center, '2': secondVertex.get().center })
 
   return (
     <main className='h-screen w-screen'>
