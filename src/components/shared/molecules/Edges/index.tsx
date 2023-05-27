@@ -1,14 +1,12 @@
-import { IEdgesProps } from './types'
-
 import { useEdges } from './useEdges'
 
 import { Edge } from 'src/components/shared/atoms/Edge'
 
-export const Edges = ({ edges }: IEdgesProps) => {
-  const { updated, edgeColor } = useEdges({ edges })
+export const Edges = () => {
+  const { updated, edgeColor } = useEdges()
 
   return (
-    <svg className='w-full h-full absolute -z-10 border border-red-500'>
+    <svg className='w-full h-full absolute -z-10'>
       {updated?.map(({ path, vertices }) => (
         <Edge d={path} key={vertices.toString()} stroke={edgeColor} />
       ))}

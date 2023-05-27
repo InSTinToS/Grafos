@@ -17,7 +17,10 @@ const connectVertex: TConnectVertex = ({
   secondVertex
 }) => {
   const afterState = beforeState
-  let firstVertexConnections = afterState[firstIndex].connections
+
+  let firstVertexConnections = afterState.find(
+    ({ index }) => index === firstIndex
+  ).connections
 
   const alreadyConnected = firstVertexConnections.find(
     ({ index }) => index === secondVertex.index

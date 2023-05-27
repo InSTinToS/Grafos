@@ -32,9 +32,7 @@ export interface IConnection {
   label: string
 }
 
-export interface IVertex {
-  index: number
-  label: string
+export interface IVertex extends IConnection {
   connections: IConnection[]
 }
 
@@ -45,10 +43,11 @@ export interface IForwardVertex {
 export interface IVertexProps {
   index: number
   label: string
+  className?: string
   onDrag?: TOnVertexDrag
   connections: IVertex[]
   onMouseDown?: TOnVertexMouseDown
-  graphRef: RefObject<HTMLDivElement>
+  graphRef?: RefObject<HTMLDivElement>
 }
 
 export interface IUseVertexParams {

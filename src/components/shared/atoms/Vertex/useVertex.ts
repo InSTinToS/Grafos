@@ -22,7 +22,7 @@ export const useVertex = ({
   const vertex = { label, connections, index }
 
   const onDrag: TOnDrag = (event, info) => {
-    const graph = graphRef.current?.getBoundingClientRect()
+    const graph = graphRef?.current?.getBoundingClientRect()
 
     if (!graph?.width) return
 

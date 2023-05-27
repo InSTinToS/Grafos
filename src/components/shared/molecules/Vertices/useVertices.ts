@@ -1,8 +1,8 @@
-import { IUseVerticesParams, TVertexRef } from './types'
+import { TVertexRef } from './types'
 
-import { IEdge } from '../Edges/types'
+import { GraphContext } from '../../organisms/Graph/useGraph'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 
 import {
   IForwardVertex,
@@ -14,17 +14,21 @@ import {
 import { connectVertices } from 'src/utils/graph/connectVertices'
 import { createEdge } from 'src/utils/graph/createEdge'
 import { deleteEdge } from 'src/utils/graph/deleteEdge'
+import { disconnectAllVertices } from 'src/utils/graph/disconnectAllVertices'
 import { disconnectVertices } from 'src/utils/graph/disconnectVertices'
 import { getUpdatedEdgePath } from 'src/utils/graph/getUpdatedEdgePath'
 
-export const useVertices = ({ edges }: IUseVerticesParams) => {
+export const useVertices = () => {
   const refs = useRef<IForwardVertex[]>([])
   const [selected, setSelected] = useState<number[]>([])
-  const [vertices, setVertices] = useState<IVertex[]>([
-    { label: 'A', connections: [], index: 0 },
-    { label: 'B', connections: [], index: 1 },
-    { label: 'C', connections: [], index: 2 }
-  ])
+  const { edges, vertices, setVertices, graphRef } = useContext(GraphContext)
+
+  console.log({ selected })
+
+  const selectedTw = (index: number) =>
+    selected.findIndex(selected => selected === index) + 1
+      ? 'outline-green-500 outline-2 outline'
+      : ''
 
   const vertexRef: TVertexRef = (ref, index) => {
     if (ref) refs.current[index] = ref
@@ -32,30 +36,25 @@ export const useVertices = ({ edges }: IUseVerticesParams) => {
 
   const onDrag: IVertexProps['onDrag'] = (_event, _info, vertex) => {
     const index = vertex.index
-    const prev = edges.get()
+    const prev = edges?.get() || []
 
-    const edgesOfVertex = prev.filter(({ vertices }) =>
+    const edgesOfVertex = prev?.filter(({ vertices }) =>
       vertices.find(vertex => vertex.index === index)
     )
 
-    const updatedEdgesOfVertex: IEdge[] = edgesOfVertex.map(
-      ({ vertices, path }) => {
-        const newPath = getUpdatedEdgePath({
-          refs: [
-            refs.current[vertices[0].index],
-            refs.current[vertices[1].index]
-          ]
-        })
+    const updatedEdgesOfVertex = edgesOfVertex?.map(({ vertices, path }) => {
+      const newPath = getUpdatedEdgePath({
+        refs: [refs.current[vertices[0].index], refs.current[vertices[1].index]]
+      })
 
-        return { path: newPath || path, vertices }
-      }
-    )
+      return { path: newPath || path, vertices }
+    })
 
-    const otherEdges = prev.filter(({ vertices }) =>
+    const otherEdges = prev?.filter(({ vertices }) =>
       vertices.every(vertex => vertex.index !== index)
     )
 
-    return edges.set([...otherEdges, ...updatedEdgesOfVertex])
+    return edges?.set([...otherEdges, ...updatedEdgesOfVertex])
   }
 
   const onMouseDown: TOnVertexMouseDown = (event, vertex) => {
@@ -73,19 +72,13 @@ export const useVertices = ({ edges }: IUseVerticesParams) => {
     if (event.altKey) {
       setSelected([])
 
-      setVertices(prev =>
-        prev.map(prevVertex => ({
-          ...prevVertex,
-          connections:
-            prevVertex.index === vertex.index
-              ? []
-              : prevVertex.connections.filter(
-                  connection => connection.index !== vertex.index
-                )
-        }))
-      )
+      setVertices &&
+        vertices &&
+        setVertices(
+          disconnectAllVertices({ prevState: vertices, index: vertex.index })
+        )
 
-      edges.set(
+      edges?.set(
         edges
           .get()
           .filter(edge =>
@@ -96,42 +89,41 @@ export const useVertices = ({ edges }: IUseVerticesParams) => {
   }
 
   const createVerticesConnection = useCallback(() => {
-    setVertices(prevState => {
-      const vertices: IVertex[] = []
+    setVertices &&
+      setVertices(prevState => {
+        const vertices: IVertex[] = []
 
-      prevState.find(vertex => {
-        if (vertex.index === selected[0]) vertices[0] = vertex
-        if (vertex.index === selected[1]) vertices[1] = vertex
-      })
-
-      const verticesNotExists = !vertices[0] || !vertices[1]
-
-      if (verticesNotExists) return prevState
-
-      const alreadyConnected = vertices[0].connections.find(
-        ({ index }) => index === vertices[1].index
-      )
-
-      if (alreadyConnected) {
-        edges.set(deleteEdge({ vertices, prev: edges.get() }))
-
-        return disconnectVertices({
-          beforeState: prevState,
-          verticesIndexes: [vertices[0].index, vertices[1].index]
+        prevState.find(vertex => {
+          if (vertex.index === selected[0]) vertices[0] = vertex
+          if (vertex.index === selected[1]) vertices[1] = vertex
         })
-      }
 
-      edges.set(createEdge({ refs, vertices, prev: edges.get() }))
+        const verticesNotExists = !vertices[0] || !vertices[1]
 
-      return connectVertices({ beforeState: prevState, vertices })
-    })
-  }, [edges, selected])
+        if (verticesNotExists) return prevState
+
+        const alreadyConnected = vertices[0].connections.find(
+          ({ index }) => index === vertices[1].index
+        )
+
+        if (alreadyConnected) {
+          edges?.set(deleteEdge({ vertices, prev: edges?.get() }))
+
+          return disconnectVertices({
+            beforeState: prevState,
+            verticesIndexes: [vertices[0].index, vertices[1].index]
+          })
+        }
+
+        edges?.set(createEdge({ refs, vertices, prev: edges?.get() }))
+
+        return connectVertices({ beforeState: prevState, vertices })
+      })
+  }, [edges, selected, setVertices])
 
   useEffect(() => {
     if (selected.length === 2) createVerticesConnection()
   }, [selected, createVerticesConnection])
 
-  console.log(vertices)
-
-  return { vertexRef, vertices, onDrag, onMouseDown }
+  return { vertexRef, onDrag, onMouseDown, selectedTw, vertices, graphRef }
 }

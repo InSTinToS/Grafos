@@ -12,6 +12,7 @@ export const Vertex = forwardRef<IForwardVertex, IVertexProps>(
       index,
       label,
       graphRef,
+      className,
       connections,
       onDrag: onDragProp,
       onMouseDown: onMouseDownProp
@@ -37,7 +38,7 @@ export const Vertex = forwardRef<IForwardVertex, IVertexProps>(
         dragMomentum={false}
         onMouseDown={onMouseDown}
         dragConstraints={graphRef}
-        className='bg-white-500 text-primary-500 font-bold flex items-center justify-center border-primary-500 border-2 rounded-full absolute'
+        className={`bg-white-500 text-primary-500 font-bold flex items-center justify-center border-primary-500 border-2 rounded-full absolute ${className}`}
         style={vertexStyle}
       >
         {label}
