@@ -1,5 +1,7 @@
 import { IUseVerticesParams, TVertexRef } from './types'
 
+import { IEdge } from '../Edges/types'
+
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import {
@@ -8,42 +10,10 @@ import {
   IVertexProps,
   TOnVertexMouseDown
 } from 'src/components/shared/atoms/Vertex/types'
-import {
-  IEdge,
-  TCreateVertexConnection,
-  TUpdateEdge
-} from 'src/components/shared/organisms/Graph/types'
 
-const createVertexConnection: TCreateVertexConnection = (
-  beforeState,
-  firstIndex,
-  secondVertex
-) => {
-  const afterState = beforeState
-  let firstVertexConnections = afterState[firstIndex].connections
-
-  const alreadyConnected = firstVertexConnections.find(
-    ({ index }) => index === secondVertex.index
-  )
-
-  if (alreadyConnected) return afterState
-
-  const secondVertexConnection = {
-    index: secondVertex.index,
-    label: secondVertex.label
-  }
-
-  if (firstVertexConnections)
-    firstVertexConnections.push(secondVertexConnection)
-  else firstVertexConnections = [secondVertexConnection]
-
-  afterState[firstIndex] = {
-    ...afterState[firstIndex],
-    connections: firstVertexConnections
-  }
-
-  return afterState
-}
+import { connectVertices } from 'src/utils/graph/connectVertices'
+import { createEdge } from 'src/utils/graph/createEdge'
+import { getUpdatedEdgePath } from 'src/utils/graph/getUpdatedEdgePath'
 
 export const useVertices = ({ edges }: IUseVerticesParams) => {
   const refs = useRef<IForwardVertex[]>([])
@@ -54,28 +24,8 @@ export const useVertices = ({ edges }: IUseVerticesParams) => {
     { label: 'C', connections: [], index: 2 }
   ])
 
-  console.log({ selected })
-  console.log({ vertices })
-  console.log({ refs })
-
   const vertexRef: TVertexRef = (ref, index) => {
     if (ref) refs.current[index] = ref
-  }
-
-  const getUpdatedEdgePath: TUpdateEdge = (
-    firstVertexIndex,
-    secondVertexIndex
-  ) => {
-    const firstVertex = refs.current[firstVertexIndex]
-
-    const secondVertex = refs.current[secondVertexIndex]
-
-    if (!firstVertex || !secondVertex) return ''
-
-    const firstPoint = firstVertex.getMotionValue().point
-    const secondPoint = secondVertex.getMotionValue().point
-
-    return `M${firstPoint.x},${firstPoint.y} L${secondPoint.x},${secondPoint.y}`
   }
 
   const onDrag: IVertexProps['onDrag'] = (_event, _info, vertex) => {
@@ -88,7 +38,12 @@ export const useVertices = ({ edges }: IUseVerticesParams) => {
 
     const updatedEdgesOfVertex: IEdge[] = edgesOfVertex.map(
       ({ vertices, path }) => {
-        const newPath = getUpdatedEdgePath(vertices[0].index, vertices[1].index)
+        const newPath = getUpdatedEdgePath({
+          refs: [
+            refs.current[vertices[0].index],
+            refs.current[vertices[1].index]
+          ]
+        })
 
         return { path: newPath || path, vertices }
       }
@@ -102,7 +57,7 @@ export const useVertices = ({ edges }: IUseVerticesParams) => {
   }
 
   const onMouseDown: TOnVertexMouseDown = (event, vertex) => {
-    if (event.ctrlKey)
+    event.ctrlKey &&
       setSelected(prev => {
         const newSelected = vertex.index
 
@@ -114,35 +69,6 @@ export const useVertices = ({ edges }: IUseVerticesParams) => {
       })
   }
 
-  const createEdge = useCallback(
-    (firstVertex: IVertex, secondVertex: IVertex) => {
-      const vertices = [
-        { index: firstVertex.index, label: firstVertex.label },
-        { index: secondVertex.index, label: secondVertex.label }
-      ]
-      const prev = edges.get()
-
-      const edgeAlreadyExists = prev.find(
-        edge =>
-          (edge.vertices[0].index === vertices[0].index &&
-            edge.vertices[1].index === vertices[1].index) ||
-          (edge.vertices[1].index === vertices[0].index &&
-            edge.vertices[0].index === vertices[1].index)
-      )
-
-      if (edgeAlreadyExists) edges.set(prev)
-
-      edges.set([
-        ...prev,
-        {
-          vertices: [vertices[0], vertices[1]],
-          path: getUpdatedEdgePath(firstVertex.index, secondVertex.index)
-        }
-      ])
-    },
-    [edges]
-  )
-
   const createVerticesConnection = useCallback(() => {
     setVertices(prevState => {
       const vertices: IVertex[] = []
@@ -152,27 +78,35 @@ export const useVertices = ({ edges }: IUseVerticesParams) => {
         if (vertex.index === selected[1]) vertices[1] = vertex
       })
 
-      if (!vertices[0] || !vertices[1]) return prevState
+      const verticesNotExists = !vertices[0] || !vertices[1]
+
+      if (verticesNotExists) return prevState
 
       let newState = [...prevState]
 
-      newState = createVertexConnection(
-        newState,
-        vertices[0].index,
-        vertices[1]
-      )
+      newState = connectVertices({
+        beforeState: newState,
+        secondVertex: vertices[1],
+        firstIndex: vertices[0].index
+      })
 
-      newState = createVertexConnection(
-        newState,
-        vertices[1].index,
-        vertices[0]
-      )
+      newState = connectVertices({
+        beforeState: newState,
+        secondVertex: vertices[0],
+        firstIndex: vertices[1].index
+      })
 
-      createEdge(vertices[0], vertices[1])
+      edges.set(
+        createEdge({
+          refs,
+          prev: edges.get(),
+          vertices: [vertices[0], vertices[1]]
+        })
+      )
 
       return newState
     })
-  }, [createEdge, selected])
+  }, [edges, selected])
 
   useEffect(() => {
     if (selected.length === 2) createVerticesConnection()

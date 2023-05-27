@@ -2,7 +2,30 @@ import { MouseEvent, RefObject } from 'react'
 
 import { PanInfo } from 'framer-motion'
 
-export type TGetMotion = () => IVertexMotion
+export type TGetMotion = () => IVertexCoords
+
+export type TOnDrag = (
+  event: globalThis.MouseEvent | globalThis.PointerEvent,
+  info: PanInfo
+) => void
+
+export type TOnVertexDrag = (
+  event: globalThis.MouseEvent | globalThis.PointerEvent,
+  info: PanInfo,
+  vertex: IVertex
+) => void
+
+export type TOnMouseDown = (event: MouseEvent<HTMLLIElement>) => void
+
+export type TOnVertexMouseDown = (
+  event: MouseEvent<HTMLLIElement>,
+  vertex: IVertex
+) => void
+
+export interface IVertexCoords {
+  x: number
+  y: number
+}
 
 export interface IConnection {
   index: number
@@ -15,39 +38,9 @@ export interface IVertex {
   connections: IConnection[]
 }
 
-export interface IVertexMotion {
-  point: { x: number; y: number }
-  offset: { x: number; y: number }
-  center: { x: number; y: number }
-}
-
 export interface IForwardVertex {
-  getMotionValue: () => IVertexMotion
+  getMotionValue: () => IVertexCoords
 }
-
-export type TOnDrag = (
-  event:
-    | globalThis.MouseEvent
-    | globalThis.TouchEvent
-    | globalThis.PointerEvent,
-  info: PanInfo
-) => void
-
-export type TOnMouseDown = (event: MouseEvent<HTMLLIElement>) => void
-
-export type TOnVertexDrag = (
-  event:
-    | globalThis.MouseEvent
-    | globalThis.TouchEvent
-    | globalThis.PointerEvent,
-  info: PanInfo,
-  vertex: IVertex
-) => void
-
-export type TOnVertexMouseDown = (
-  event: MouseEvent<HTMLLIElement>,
-  vertex: IVertex
-) => void
 
 export interface IVertexProps {
   index: number
@@ -56,4 +49,14 @@ export interface IVertexProps {
   connections: IVertex[]
   onMouseDown?: TOnVertexMouseDown
   graphRef: RefObject<HTMLDivElement>
+}
+
+export interface IUseVertexParams {
+  ref: any
+  index: IVertexProps['index']
+  label: IVertexProps['label']
+  graphRef: IVertexProps['graphRef']
+  onDragProp: IVertexProps['onDrag']
+  connections: IVertexProps['connections']
+  onMouseDownProp: IVertexProps['onMouseDown']
 }

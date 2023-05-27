@@ -1,8 +1,15 @@
-import { IEdge } from './types'
+import { IEdge } from '../../molecules/Edges/types'
 
-import { useRef } from 'react'
+import { createContext, useRef } from 'react'
+
+import colors from 'src/styles/custom/colors'
 
 import { useMotionValue } from 'framer-motion'
+
+export const GraphContext = createContext({
+  vertexSize: 32,
+  edgeColor: colors.secondary[500]
+})
 
 export const useGraph = () => {
   const graphRef = useRef<HTMLDivElement>(null)
