@@ -13,6 +13,8 @@ import {
 
 import { connectVertices } from 'src/utils/graph/connectVertices'
 import { createEdge } from 'src/utils/graph/createEdge'
+import { deleteEdge } from 'src/utils/graph/deleteEdge'
+import { disconnectVertices } from 'src/utils/graph/disconnectVertices'
 import { getUpdatedEdgePath } from 'src/utils/graph/getUpdatedEdgePath'
 
 export const useVertices = ({ edges }: IUseVerticesParams) => {
@@ -67,6 +69,30 @@ export const useVertices = ({ edges }: IUseVerticesParams) => {
 
         return alreadySelected ? prev : [...prev, newSelected]
       })
+
+    if (event.altKey) {
+      setSelected([])
+
+      setVertices(prev =>
+        prev.map(prevVertex => ({
+          ...prevVertex,
+          connections:
+            prevVertex.index === vertex.index
+              ? []
+              : prevVertex.connections.filter(
+                  connection => connection.index !== vertex.index
+                )
+        }))
+      )
+
+      edges.set(
+        edges
+          .get()
+          .filter(edge =>
+            edge.vertices.every(({ index }) => index !== vertex.index)
+          )
+      )
+    }
   }
 
   const createVerticesConnection = useCallback(() => {
@@ -82,35 +108,30 @@ export const useVertices = ({ edges }: IUseVerticesParams) => {
 
       if (verticesNotExists) return prevState
 
-      let newState = [...prevState]
-
-      newState = connectVertices({
-        beforeState: newState,
-        secondVertex: vertices[1],
-        firstIndex: vertices[0].index
-      })
-
-      newState = connectVertices({
-        beforeState: newState,
-        secondVertex: vertices[0],
-        firstIndex: vertices[1].index
-      })
-
-      edges.set(
-        createEdge({
-          refs,
-          prev: edges.get(),
-          vertices: [vertices[0], vertices[1]]
-        })
+      const alreadyConnected = vertices[0].connections.find(
+        ({ index }) => index === vertices[1].index
       )
 
-      return newState
+      if (alreadyConnected) {
+        edges.set(deleteEdge({ vertices, prev: edges.get() }))
+
+        return disconnectVertices({
+          beforeState: prevState,
+          verticesIndexes: [vertices[0].index, vertices[1].index]
+        })
+      }
+
+      edges.set(createEdge({ refs, vertices, prev: edges.get() }))
+
+      return connectVertices({ beforeState: prevState, vertices })
     })
   }, [edges, selected])
 
   useEffect(() => {
     if (selected.length === 2) createVerticesConnection()
   }, [selected, createVerticesConnection])
+
+  console.log(vertices)
 
   return { vertexRef, vertices, onDrag, onMouseDown }
 }

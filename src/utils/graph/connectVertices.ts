@@ -1,12 +1,17 @@
 import { IVertex } from 'src/components/shared/atoms/Vertex/types'
 
-type TConnectVertices = (params: {
+type TConnectVertex = (params: {
   beforeState: IVertex[]
   firstIndex: number
   secondVertex: IVertex
 }) => IVertex[]
 
-export const connectVertices: TConnectVertices = ({
+type TConnectVertices = (params: {
+  beforeState: IVertex[]
+  vertices: IVertex[]
+}) => IVertex[]
+
+const connectVertex: TConnectVertex = ({
   beforeState,
   firstIndex,
   secondVertex
@@ -25,9 +30,9 @@ export const connectVertices: TConnectVertices = ({
     label: secondVertex.label
   }
 
-  if (firstVertexConnections)
-    firstVertexConnections.push(secondVertexConnection)
-  else firstVertexConnections = [secondVertexConnection]
+  firstVertexConnections
+    ? firstVertexConnections.push(secondVertexConnection)
+    : (firstVertexConnections = [secondVertexConnection])
 
   afterState[firstIndex] = {
     ...afterState[firstIndex],
@@ -35,4 +40,25 @@ export const connectVertices: TConnectVertices = ({
   }
 
   return afterState
+}
+
+export const connectVertices: TConnectVertices = ({
+  vertices,
+  beforeState
+}) => {
+  let newState = beforeState
+
+  newState = connectVertex({
+    beforeState: newState,
+    secondVertex: vertices[0],
+    firstIndex: vertices[1].index
+  })
+
+  newState = connectVertex({
+    beforeState: newState,
+    secondVertex: vertices[1],
+    firstIndex: vertices[0].index
+  })
+
+  return newState
 }
