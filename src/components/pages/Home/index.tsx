@@ -1,4 +1,4 @@
-import { Graph } from 'src/components/shared/molecules/Graph'
+import { Graph } from 'src/components/shared/organisms/Graph'
 
 export const Home = () => {
   return (

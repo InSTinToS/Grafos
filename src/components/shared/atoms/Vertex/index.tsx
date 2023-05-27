@@ -1,16 +1,22 @@
-import { IVertexMotion, IVertexProps, TOnDrag, TOnMouseDown } from './types'
+import {
+  IForwardVertex,
+  IVertexMotion,
+  IVertexProps,
+  TOnDrag,
+  TOnMouseDown
+} from './types'
 
 import { forwardRef, useImperativeHandle } from 'react'
 
 import { PanInfo, motion, useMotionValue } from 'framer-motion'
 
-export const Vertex = forwardRef<any, IVertexProps>(
+export const Vertex = forwardRef<IForwardVertex, IVertexProps>(
   (
     {
       index,
       label,
+      graphRef,
       connections,
-      containerRef,
       onDrag: onMouseDragProp,
       onMouseDown: onMouseDownProp
     },
@@ -25,8 +31,7 @@ export const Vertex = forwardRef<any, IVertexProps>(
     const vertex = { label, connections, index }
 
     const updateVertexPosition = (info: PanInfo) => {
-      const container = containerRef.current?.getBoundingClientRect()
-
+      const container = graphRef.current?.getBoundingClientRect()
       if (!container?.width) return
 
       const halfSize = 32 / 2
@@ -51,7 +56,7 @@ export const Vertex = forwardRef<any, IVertexProps>(
     const onDrag: TOnDrag = (event, info) => {
       updateVertexPosition(info)
 
-      onMouseDragProp && onMouseDragProp(event)
+      onMouseDragProp && onMouseDragProp(event, info, vertex)
     }
 
     const onMouseDown: TOnMouseDown = event => {
@@ -69,18 +74,18 @@ export const Vertex = forwardRef<any, IVertexProps>(
     }))
 
     return (
-      <motion.div
+      <motion.li
         drag
-        ref={ref}
         onDrag={onDrag}
         dragElastic={0}
+        ref={ref as any}
         dragMomentum={false}
         onMouseDown={onMouseDown}
-        dragConstraints={containerRef}
+        dragConstraints={graphRef}
         className='bg-white-500 text-primary-500 font-bold flex items-center justify-center border-primary-500 border-2 w-8 h-8 rounded-full absolute'
       >
         {label}
-      </motion.div>
+      </motion.li>
     )
   }
 )

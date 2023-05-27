@@ -6,6 +6,7 @@ export type TGetMotion = () => IVertexMotion
 
 export interface IConnection {
   index: number
+  label: string
 }
 
 export interface IVertex {
@@ -20,6 +21,10 @@ export interface IVertexMotion {
   center: { x: number; y: number }
 }
 
+export interface IForwardVertex {
+  getMotionValue: () => IVertexMotion
+}
+
 export type TOnDrag = (
   event:
     | globalThis.MouseEvent
@@ -28,14 +33,19 @@ export type TOnDrag = (
   info: PanInfo
 ) => void
 
+export type TOnMouseDown = (event: MouseEvent<HTMLLIElement>) => void
+
 export type TOnVertexDrag = (
-  event: globalThis.MouseEvent | globalThis.TouchEvent | globalThis.PointerEvent
+  event:
+    | globalThis.MouseEvent
+    | globalThis.TouchEvent
+    | globalThis.PointerEvent,
+  info: PanInfo,
+  vertex: IVertex
 ) => void
 
-export type TOnMouseDown = (event: MouseEvent<HTMLDivElement>) => void
-
 export type TOnVertexMouseDown = (
-  event: MouseEvent<HTMLDivElement>,
+  event: MouseEvent<HTMLLIElement>,
   vertex: IVertex
 ) => void
 
@@ -45,5 +55,5 @@ export interface IVertexProps {
   onDrag?: TOnVertexDrag
   connections: IVertex[]
   onMouseDown?: TOnVertexMouseDown
-  containerRef: RefObject<HTMLDivElement>
+  graphRef: RefObject<HTMLDivElement>
 }
