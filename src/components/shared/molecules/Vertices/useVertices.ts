@@ -23,7 +23,7 @@ export const useVertices = () => {
   const [selected, setSelected] = useState<number[]>([])
   const { edges, vertices, setVertices, graphRef } = useContext(GraphContext)
 
-  console.log({ selected })
+  console.log({ selected, edges })
 
   const selectedTw = (index: number) =>
     selected.findIndex(selected => selected === index) + 1

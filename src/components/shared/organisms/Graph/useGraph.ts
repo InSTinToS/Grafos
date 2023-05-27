@@ -28,11 +28,12 @@ export const useGraph = () => {
       {
         label,
         connections: [],
-        index:
-          vertices.reduce(
-            (prev, curr) => (prev.index > curr.index ? prev : curr),
-            { connections: [], index: 0, label: '' }
-          ).index + 1
+        index: vertices[0]
+          ? vertices.reduce(
+              (prev, curr) => (prev.index > curr.index ? prev : curr),
+              vertices[0]
+            ).index + 1
+          : 0
       }
     ])
   }
