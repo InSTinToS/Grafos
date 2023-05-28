@@ -1,6 +1,6 @@
 import { IUseVertexParams, IVertexCoords, TOnDrag, TOnMouseDown } from './types'
 
-import { GraphContext } from '../../organisms/Graph/useGraph'
+import { GraphContext } from '../../useGraph'
 
 import { useContext, useImperativeHandle, useState } from 'react'
 

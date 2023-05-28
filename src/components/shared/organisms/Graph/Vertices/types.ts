@@ -1,5 +1,5 @@
-import { IVertex } from '../../atoms/Vertex/types'
 import { IEdge } from '../Edges/types'
+import { IVertex } from './Vertex/types'
 
 import { RefObject } from 'react'
 

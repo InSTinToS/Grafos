@@ -1,6 +1,6 @@
-import { RefObject } from 'react'
+import { IForwardVertex } from '../../../components/shared/organisms/Graph/Vertices/Vertex/types'
 
-import { IForwardVertex } from 'src/components/shared/atoms/Vertex/types'
+import { RefObject } from 'react'
 
 type TUpdateEdge = (params: {
   refs: RefObject<IForwardVertex>['current'][]

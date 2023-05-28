@@ -1,4 +1,4 @@
-import { IVertex } from 'src/components/shared/atoms/Vertex/types'
+import { IVertex } from '../../../components/shared/organisms/Graph/Vertices/Vertex/types'
 
 type TConnectVertex = (params: {
   beforeState: IVertex[]
@@ -18,11 +18,11 @@ const connectVertex: TConnectVertex = ({
 }) => {
   const afterState = beforeState
 
-  let firstVertexConnections = afterState.find(
+  let firstVertexConnections = afterState?.find(
     ({ index }) => index === firstIndex
-  ).connections
+  )?.connections
 
-  const alreadyConnected = firstVertexConnections.find(
+  const alreadyConnected = firstVertexConnections?.find(
     ({ index }) => index === secondVertex.index
   )
 

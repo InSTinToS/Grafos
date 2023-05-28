@@ -2,12 +2,11 @@
 
 import { IGraphProps } from './types'
 
+import { Edges } from './Edges'
+import { Vertices } from './Vertices'
 import { GraphContext, useGraph } from './useGraph'
 
 import colors from 'src/styles/custom/colors'
-
-import { Edges } from 'src/components/shared/molecules/Edges'
-import { Vertices } from 'src/components/shared/molecules/Vertices'
 
 import { Close } from 'src/assets/icons/Close'
 

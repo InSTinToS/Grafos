@@ -1,6 +1,5 @@
+import { Edge } from './Edge'
 import { useEdges } from './useEdges'
-
-import { Edge } from 'src/components/shared/atoms/Edge'
 
 export const Edges = () => {
   const { updated, edgeColor } = useEdges()

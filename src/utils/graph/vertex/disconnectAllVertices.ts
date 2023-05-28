@@ -1,4 +1,4 @@
-import { IVertex } from 'src/components/shared/atoms/Vertex/types'
+import { IVertex } from '../../../components/shared/organisms/Graph/Vertices/Vertex/types'
 
 type TDisconnectAllVertices = (params: {
   prevState: IVertex[]

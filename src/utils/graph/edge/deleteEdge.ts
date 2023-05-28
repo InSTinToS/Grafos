@@ -1,5 +1,5 @@
-import { IVertex } from 'src/components/shared/atoms/Vertex/types'
-import { IEdge } from 'src/components/shared/molecules/Edges/types'
+import { IEdge } from '../../../components/shared/organisms/Graph/Edges/types'
+import { IVertex } from '../../../components/shared/organisms/Graph/Vertices/Vertex/types'
 
 type TDeleteEdge = (params: { prev?: IEdge[]; vertices: IVertex[] }) => IEdge[]
 

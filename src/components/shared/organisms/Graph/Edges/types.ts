@@ -1,4 +1,4 @@
-import { IConnection } from '../../atoms/Vertex/types'
+import { IConnection } from '../Vertices/Vertex/types'
 
 import { SVGProps } from 'react'
 

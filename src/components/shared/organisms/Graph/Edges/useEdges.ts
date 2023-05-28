@@ -1,6 +1,6 @@
 import { IEdge } from './types'
 
-import { GraphContext } from '../../organisms/Graph/useGraph'
+import { GraphContext } from '../useGraph'
 
 import { useContext, useEffect, useState } from 'react'
 

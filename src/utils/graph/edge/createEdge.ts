@@ -1,12 +1,11 @@
-import { getUpdatedEdgePath } from './getUpdatedEdgePath'
-
-import { RefObject } from 'react'
-
+import { IEdge } from '../../../components/shared/organisms/Graph/Edges/types'
 import {
   IForwardVertex,
   IVertex
-} from 'src/components/shared/atoms/Vertex/types'
-import { IEdge } from 'src/components/shared/molecules/Edges/types'
+} from '../../../components/shared/organisms/Graph/Vertices/Vertex/types'
+import { getUpdatedEdgePath } from './getUpdatedEdgePath'
+
+import { RefObject } from 'react'
 
 type TCreateEdge = (params: {
   prev?: IEdge[]

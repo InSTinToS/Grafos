@@ -1,11 +1,16 @@
 import { IGraphContext } from './types'
 
-import { IVertex } from '../../atoms/Vertex/types'
-import { IEdge } from '../../molecules/Edges/types'
+import { IEdge } from './Edges/types'
+import { IVertex } from './Vertices/Vertex/types'
 
 import { createContext, useRef, useState } from 'react'
 
 import colors from 'src/styles/custom/colors'
+
+import { TInput } from 'src/types/react.types'
+
+import { addVertex } from 'src/utils/graph/vertex/addVertex'
+import { deleteVertex } from 'src/utils/graph/vertex/deleteVertex'
 
 import { useMotionValue } from 'framer-motion'
 
@@ -23,36 +28,18 @@ export const useGraph = () => {
   const onSubmit = (e: any) => {
     e.preventDefault()
 
-    setVertices(prev => [
-      ...prev,
-      {
-        label,
-        connections: [],
-        index: vertices[0]
-          ? vertices.reduce(
-              (prev, curr) => (prev.index > curr.index ? prev : curr),
-              vertices[0]
-            ).index + 1
-          : 0
-      }
-    ])
+    setVertices(addVertex({ prevState: vertices, label }))
   }
 
-  const onLabelChange = (e: any) => {
-    e.preventDefault()
-
-    const label: string = e.target.value
-
-    setLabel(label.toUpperCase())
+  const onLabelChange: TInput['onChange'] = event => {
+    setLabel(event.target.value.toUpperCase())
   }
 
   const onRemoveClick = (index: number) => {
-    setVertices(prev => prev.filter(prevVertex => prevVertex.index !== index))
+    setVertices(deleteVertex({ prevState: vertices, index }))
   }
 
   const context = { graphRef, edges, vertices, setVertices }
-
-  console.log({ vertices })
 
   return { context, onLabelChange, onSubmit, onRemoveClick }
 }

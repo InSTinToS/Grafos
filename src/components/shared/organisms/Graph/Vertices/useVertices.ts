@@ -1,29 +1,27 @@
 import { TVertexRef } from './types'
 
-import { GraphContext } from '../../organisms/Graph/useGraph'
-
-import { useCallback, useContext, useEffect, useRef, useState } from 'react'
-
+import { GraphContext } from '../useGraph'
 import {
   IForwardVertex,
   IVertex,
   IVertexProps,
   TOnVertexMouseDown
-} from 'src/components/shared/atoms/Vertex/types'
+} from './Vertex/types'
 
-import { connectVertices } from 'src/utils/graph/connectVertices'
-import { createEdge } from 'src/utils/graph/createEdge'
-import { deleteEdge } from 'src/utils/graph/deleteEdge'
-import { disconnectAllVertices } from 'src/utils/graph/disconnectAllVertices'
-import { disconnectVertices } from 'src/utils/graph/disconnectVertices'
-import { getUpdatedEdgePath } from 'src/utils/graph/getUpdatedEdgePath'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
+
+import { createEdge } from 'src/utils/graph/edge/createEdge'
+import { deleteAllEdges } from 'src/utils/graph/edge/deleteAllEdges'
+import { deleteEdge } from 'src/utils/graph/edge/deleteEdge'
+import { updateAllEdges } from 'src/utils/graph/edge/updateAllEdges'
+import { connectVertices } from 'src/utils/graph/vertex/connectVertices'
+import { disconnectAllVertices } from 'src/utils/graph/vertex/disconnectAllVertices'
+import { disconnectVertices } from 'src/utils/graph/vertex/disconnectVertices'
 
 export const useVertices = () => {
   const refs = useRef<IForwardVertex[]>([])
   const [selected, setSelected] = useState<number[]>([])
   const { edges, vertices, setVertices, graphRef } = useContext(GraphContext)
-
-  console.log({ selected, edges })
 
   const selectedTw = (index: number) =>
     selected.findIndex(selected => selected === index) + 1
@@ -35,26 +33,13 @@ export const useVertices = () => {
   }
 
   const onDrag: IVertexProps['onDrag'] = (_event, _info, vertex) => {
-    const index = vertex.index
-    const prev = edges?.get() || []
-
-    const edgesOfVertex = prev?.filter(({ vertices }) =>
-      vertices.find(vertex => vertex.index === index)
-    )
-
-    const updatedEdgesOfVertex = edgesOfVertex?.map(({ vertices, path }) => {
-      const newPath = getUpdatedEdgePath({
-        refs: [refs.current[vertices[0].index], refs.current[vertices[1].index]]
+    edges?.set(
+      updateAllEdges({
+        refs,
+        index: vertex.index,
+        prevState: edges.get()
       })
-
-      return { path: newPath || path, vertices }
-    })
-
-    const otherEdges = prev?.filter(({ vertices }) =>
-      vertices.every(vertex => vertex.index !== index)
     )
-
-    return edges?.set([...otherEdges, ...updatedEdgesOfVertex])
   }
 
   const onMouseDown: TOnVertexMouseDown = (event, vertex) => {
@@ -78,13 +63,7 @@ export const useVertices = () => {
           disconnectAllVertices({ prevState: vertices, index: vertex.index })
         )
 
-      edges?.set(
-        edges
-          .get()
-          .filter(edge =>
-            edge.vertices.every(({ index }) => index !== vertex.index)
-          )
-      )
+      edges?.set(deleteAllEdges({ prevState: edges, index: vertex.index }))
     }
   }
 
