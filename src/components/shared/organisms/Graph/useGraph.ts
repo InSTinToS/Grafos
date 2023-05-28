@@ -60,7 +60,7 @@ export const useGraph = () => {
   const onSubmit = (e: any) => {
     e.preventDefault()
 
-    setVertices(addVertex({ prevState: vertices, label }))
+    label && setVertices(addVertex({ prevState: vertices, label }))
   }
 
   const onLabelChange: TInput['onChange'] = event => {

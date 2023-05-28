@@ -33,7 +33,7 @@ export const colorize: TColorize = ({ prevState }) => {
     newVertex: { ...colorizedVertices[0], color: colors[0] }
   })
 
-  for (let i = 0; i < colors.length; i++) {
+  for (let i = 0; i < colors.length; i++)
     for (let j = 0; j < colorizedVertices.length; j++) {
       const hasColor = colorizedVertices[j].color
       const isConnectedToColor = colorizedVertices[j].connections.find(
@@ -46,7 +46,6 @@ export const colorize: TColorize = ({ prevState }) => {
           newVertex: { ...colorizedVertices[j], color: colors[i] }
         })
     }
-  }
 
   return sortByIndexLength(colorizedVertices)
 }

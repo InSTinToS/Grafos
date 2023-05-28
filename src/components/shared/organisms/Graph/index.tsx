@@ -9,6 +9,10 @@ import { GraphContext, useGraph } from './useGraph'
 import colors from 'src/styles/custom/colors'
 
 import { Close } from 'src/assets/icons/Close'
+import { Palette } from 'src/assets/icons/Palette'
+import { Plus } from 'src/assets/icons/Plus'
+import { Trash } from 'src/assets/icons/Trash'
+import { Logo } from 'src/assets/images/Logo'
 
 export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
   const {
@@ -31,9 +35,15 @@ export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
     >
       <main className='overflow-hidden w-screen h-screen flex'>
         <section className='p-4 flex flex-col shadow-lg'>
-          <h1 className='mx-auto text-white-500 text-h2 shadow-md'>Grafos</h1>
-
           <header>
+            <div className='flex items-center space-x-2 justify-center'>
+              <Logo className='h-12 w-12' />
+
+              <h1 className='mx-auto text-white-500 text-[32px] font-semibold shadow-md'>
+                Grafos
+              </h1>
+            </div>
+
             <form onSubmit={onSubmit} className='flex flex-col space-y-4 p-4'>
               <input
                 type='text'
@@ -43,32 +53,36 @@ export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
                 className='border rounded-md p-3 text-lg shadow-md'
               />
 
-              <button className='bg-info-600 py-3 text-white-500 rounded-xl font-semibold shadow-md'>
+              <button className='bg-info-600 py-3 text-white-500 rounded-xl font-semibold shadow-md  flex items-center justify-center'>
+                <Plus className='w-6 h-6 mr-2 ' />
                 Adicionar
               </button>
 
               <button
                 onClick={onColorizeClick}
                 type='button'
-                className='bg-info-600 py-3 text-white-500 rounded-xl font-semibold shadow-md'
+                className='bg-info-600 py-3 text-white-500 rounded-xl font-semibold shadow-md  flex items-center justify-center bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 relative'
               >
-                Colorir
+                <div className='w-full h-full rounded-xl opacity-20 bg-black-500 absolute'></div>
+                <Palette className='w-6 h-6 mr-2 relative z-10' />
+                <span className='relative z-10'>Colorir</span>
               </button>
 
               <button
                 onClick={onResetColorsClick}
                 type='button'
-                className='bg-info-600 py-3 text-white-500 rounded-xl font-semibold shadow-md '
+                className='bg-gradient-to-r from-gray-200  via-gray-500 to-black-500 py-3 text-white-500 rounded-xl font-semibold shadow-md  flex items-center justify-center'
               >
+                <Palette className='w-6  mr-2 h-6' />
                 Descolorir
               </button>
 
               <button
                 onClick={onResetClick}
                 type='button'
-                className='bg-info-600 py-3 text-white-500 rounded-xl font-semibold shadow-md '
+                className='bg-info-600 py-3 text-white-500 rounded-xl font-semibold shadow-md  flex items-center justify-center bg-red-500'
               >
-                Apagar tudo
+                <Trash className='h-6 mr-2 w-6' /> Apagar tudo
               </button>
             </form>
           </header>

@@ -19,12 +19,6 @@ export default async function RootLayout({ children }: IRootLayoutProps) {
         <title>Grafos</title>
 
         <link
-          sizes='180x180'
-          rel='apple-touch-icon'
-          href='/favicon/apple-touch-icon.png'
-        />
-
-        <link
           rel='icon'
           sizes='32x32'
           type='image/png'
@@ -35,7 +29,7 @@ export default async function RootLayout({ children }: IRootLayoutProps) {
           rel='icon'
           sizes='16x16'
           type='image/png'
-          href='/favicon/favicon-16x16.png'
+          href='/favicon/favicon-32x32.png'
         />
       </head>
 
