@@ -9,8 +9,10 @@ import colors from 'src/styles/custom/colors'
 
 import { TInput } from 'src/types/react.types'
 
+import { colorize } from 'src/utils/graph/colorize'
 import { addVertex } from 'src/utils/graph/vertex/addVertex'
 import { deleteVertex } from 'src/utils/graph/vertex/deleteVertex'
+import { updateVertex } from 'src/utils/graph/vertex/updateVertex'
 
 import { useMotionValue } from 'framer-motion'
 
@@ -19,11 +21,41 @@ export const GraphContext = createContext<IGraphContext>({
   edgeColor: colors.secondary[500]
 })
 
+const resetColors = (prevState: IVertex[]): IVertex[] => {
+  let updatedVertices: IVertex[] = [...prevState]
+
+  for (let i = 0; i < updatedVertices.length; i++)
+    updatedVertices = updateVertex({
+      prevState: updatedVertices,
+      newVertex: {
+        color: undefined,
+        index: updatedVertices[i].index,
+        label: updatedVertices[i].label,
+        connections: updatedVertices[i].connections
+      }
+    })
+
+  return [...updatedVertices]
+}
+
 export const useGraph = () => {
   const [label, setLabel] = useState('')
   const edges = useMotionValue<IEdge[]>([])
   const graphRef = useRef<HTMLDivElement>(null)
   const [vertices, setVertices] = useState<IVertex[]>([])
+
+  const onColorizeClick = () => {
+    setVertices([...colorize({ prevState: resetColors(vertices) })])
+  }
+
+  const onResetColorsClick = () => {
+    setVertices([...resetColors(vertices)])
+  }
+
+  const onResetClick = () => {
+    setVertices([])
+    edges.set([])
+  }
 
   const onSubmit = (e: any) => {
     e.preventDefault()
@@ -41,5 +73,13 @@ export const useGraph = () => {
 
   const context = { graphRef, edges, vertices, setVertices }
 
-  return { context, onLabelChange, onSubmit, onRemoveClick }
+  return {
+    context,
+    onSubmit,
+    onResetClick,
+    onLabelChange,
+    onRemoveClick,
+    onColorizeClick,
+    onResetColorsClick
+  }
 }

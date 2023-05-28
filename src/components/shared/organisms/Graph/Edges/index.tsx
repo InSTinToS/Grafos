@@ -5,7 +5,7 @@ export const Edges = () => {
   const { updated, edgeColor } = useEdges()
 
   return (
-    <svg className='w-full h-full absolute -z-10'>
+    <svg className='w-full h-full absolute'>
       {updated?.map(({ path, vertices }) => (
         <Edge d={path} key={vertices.toString()} stroke={edgeColor} />
       ))}

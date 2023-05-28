@@ -18,9 +18,9 @@ const connectVertex: TConnectVertex = ({
 }) => {
   const afterState = beforeState
 
-  let firstVertexConnections = afterState?.find(
-    ({ index }) => index === firstIndex
-  )?.connections
+  let firstVertexConnections = afterState
+    ?.find(({ index }) => index === firstIndex)
+    ?.connections.filter(({ index }) => index !== firstIndex)
 
   const alreadyConnected = firstVertexConnections?.find(
     ({ index }) => index === secondVertex.index
@@ -49,18 +49,18 @@ export const connectVertices: TConnectVertices = ({
   vertices,
   beforeState
 }) => {
-  let newState = beforeState
+  let newState = [...beforeState]
 
   newState = connectVertex({
     beforeState: newState,
-    secondVertex: vertices[0],
-    firstIndex: vertices[1].index
+    firstIndex: vertices[0].index,
+    secondVertex: vertices[1]
   })
 
   newState = connectVertex({
     beforeState: newState,
-    secondVertex: vertices[1],
-    firstIndex: vertices[0].index
+    firstIndex: vertices[1].index,
+    secondVertex: vertices[0]
   })
 
   return newState

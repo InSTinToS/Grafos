@@ -30,6 +30,7 @@ export interface IVertexCoords {
 export interface IConnection {
   index: number
   label: string
+  color?: string
 }
 
 export interface IVertex extends IConnection {
@@ -43,6 +44,7 @@ export interface IForwardVertex {
 export interface IVertexProps {
   index: number
   label: string
+  color?: string
   className?: string
   onDrag?: TOnVertexDrag
   connections: IVertex[]
@@ -52,6 +54,7 @@ export interface IVertexProps {
 
 export interface IUseVertexParams {
   ref: any
+  color: IVertexProps['color']
   index: IVertexProps['index']
   label: IVertexProps['label']
   graphRef: IVertexProps['graphRef']

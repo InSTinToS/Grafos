@@ -11,7 +11,15 @@ import colors from 'src/styles/custom/colors'
 import { Close } from 'src/assets/icons/Close'
 
 export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
-  const { context, onSubmit, onLabelChange, onRemoveClick } = useGraph()
+  const {
+    context,
+    onSubmit,
+    onResetClick,
+    onLabelChange,
+    onRemoveClick,
+    onColorizeClick,
+    onResetColorsClick
+  } = useGraph()
 
   return (
     <GraphContext.Provider
@@ -22,7 +30,9 @@ export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
       }}
     >
       <main className='overflow-hidden w-screen h-screen flex'>
-        <section className='p-4'>
+        <section className='p-4 flex flex-col shadow-lg'>
+          <h1 className='mx-auto text-white-500 text-h2 shadow-md'>Grafos</h1>
+
           <header>
             <form onSubmit={onSubmit} className='flex flex-col space-y-4 p-4'>
               <input
@@ -30,20 +40,44 @@ export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
                 maxLength={1}
                 onChange={onLabelChange}
                 placeholder='Nome do vértice'
-                className='border rounded-md p-4 text-lg'
+                className='border rounded-md p-3 text-lg shadow-md'
               />
 
-              <button className='bg-primary-500 py-3 text-white-500 rounded-3xl'>
+              <button className='bg-info-600 py-3 text-white-500 rounded-xl font-semibold shadow-md'>
                 Adicionar
+              </button>
+
+              <button
+                onClick={onColorizeClick}
+                type='button'
+                className='bg-info-600 py-3 text-white-500 rounded-xl font-semibold shadow-md'
+              >
+                Colorir
+              </button>
+
+              <button
+                onClick={onResetColorsClick}
+                type='button'
+                className='bg-info-600 py-3 text-white-500 rounded-xl font-semibold shadow-md '
+              >
+                Descolorir
+              </button>
+
+              <button
+                onClick={onResetClick}
+                type='button'
+                className='bg-info-600 py-3 text-white-500 rounded-xl font-semibold shadow-md '
+              >
+                Apagar tudo
               </button>
             </form>
           </header>
 
-          <ul className='p-4 space-y-2'>
+          <ul className='p-4 space-y-2 flex-1 overflow-y-auto'>
             {context.vertices.map(vertex => (
               <li
                 key={vertex.index}
-                className='flex items-center justify-between text-lg font-bold text-primary-500'
+                className='flex items-center justify-between text-lg font-bold text-white-500 px-4'
               >
                 {vertex.label}
 
@@ -55,11 +89,8 @@ export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
           </ul>
         </section>
 
-        <section className='p-4 w-full'>
-          <div
-            ref={context.graphRef}
-            className='border border-primary-500 h-full w-full relative'
-          >
+        <section className='p-4 w-full '>
+          <div ref={context.graphRef} className='h-full w-full relative'>
             <Edges />
             <Vertices />
           </div>

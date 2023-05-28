@@ -25,7 +25,7 @@ export const useVertices = () => {
 
   const selectedTw = (index: number) =>
     selected.findIndex(selected => selected === index) + 1
-      ? 'outline-green-500 outline-2 outline'
+      ? 'outline-secondary-500 outline-2 outline'
       : ''
 
   const vertexRef: TVertexRef = (ref, index) => {
@@ -47,11 +47,13 @@ export const useVertices = () => {
       setSelected(prev => {
         const newSelected = vertex.index
 
+        const alreadySelected =
+          prev.findIndex(index => index === vertex.index) === -1 ? false : true
+
         if (prev.length >= 2) return [newSelected]
+        if (alreadySelected) return prev
 
-        const alreadySelected = prev.find(index => index === vertex.index)
-
-        return alreadySelected ? prev : [...prev, newSelected]
+        return [...prev, newSelected]
       })
 
     if (event.altKey) {
@@ -79,9 +81,10 @@ export const useVertices = () => {
 
         const verticesNotExists = !vertices[0] || !vertices[1]
 
-        if (verticesNotExists) return prevState
+        if (verticesNotExists || vertices[0].index === vertices[1].index)
+          return prevState
 
-        const alreadyConnected = vertices[0].connections.find(
+        const alreadyConnected = !!vertices[0].connections.find(
           ({ index }) => index === vertices[1].index
         )
 

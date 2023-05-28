@@ -11,6 +11,7 @@ export const Vertex = forwardRef<IForwardVertex, IVertexProps>(
     {
       index,
       label,
+      color,
       graphRef,
       className,
       connections,
@@ -23,6 +24,7 @@ export const Vertex = forwardRef<IForwardVertex, IVertexProps>(
       ref,
       index,
       label,
+      color,
       graphRef,
       onDragProp,
       connections,

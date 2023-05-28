@@ -7,11 +7,12 @@ export const Vertices = () => {
 
   return (
     <ul>
-      {vertices?.map(({ index, label }) => (
+      {vertices?.map(({ color, index, label }, mapIndex) => (
         <Vertex
-          key={index}
+          key={mapIndex}
           index={index}
           label={label}
+          color={color}
           onDrag={onDrag}
           className={selectedTw(index)}
           connections={[]}

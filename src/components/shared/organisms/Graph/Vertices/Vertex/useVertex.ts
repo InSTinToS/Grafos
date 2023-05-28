@@ -4,12 +4,15 @@ import { GraphContext } from '../../useGraph'
 
 import { useContext, useImperativeHandle, useState } from 'react'
 
+import colors from 'src/styles/custom/colors'
+
 import { useMotionValue } from 'framer-motion'
 
 export const useVertex = ({
   ref,
   label,
   index,
+  color,
   graphRef,
   onDragProp,
   connections,
@@ -19,7 +22,7 @@ export const useVertex = ({
   const [offset, setOffset] = useState({ x: 0, y: 0 })
   const motionValue = useMotionValue<IVertexCoords>({ x: 0, y: 0 })
 
-  const vertex = { label, connections, index }
+  const vertex = { label, connections, index, color }
 
   const onDrag: TOnDrag = (event, info) => {
     const graph = graphRef?.current?.getBoundingClientRect()
@@ -55,6 +58,13 @@ export const useVertex = ({
   return {
     onDrag,
     onMouseDown,
-    vertexStyle: { height: vertexSize, width: vertexSize }
+    vertexStyle: {
+      borderWidth: 1,
+      width: vertexSize,
+      height: vertexSize,
+      backgroundColor: color || '#fff',
+      borderColor: color || colors.primary[500],
+      color: color ? '#fff' : colors.primary[500]
+    }
   }
 }
