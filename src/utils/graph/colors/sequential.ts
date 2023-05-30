@@ -1,39 +1,26 @@
-import { updateVertex } from './vertex/updateVertex'
+import { updateVertex } from '../vertex/updateVertex'
+import { getRandomColor } from './getRandomColor'
+import { verifyAllColorized } from './verifyAllColorized'
 
 import { IVertex } from 'src/components/shared/organisms/Graph/Vertices/Vertex/types'
 
-type TColorize = (params: { prevState: IVertex[] }) => IVertex[]
+export type TColorize = (params: { prevState: IVertex[] }) => IVertex[]
 
-const colors = [
-  '#73c2b1',
-  '#b6ed79',
-  '#cc97cf',
-  '#135dfe',
-  '#787051',
-  '#25a417',
-  '#50125d',
-  '#8b4dd6',
-  '#9c333f'
-]
-
-const sortByConnectionsLength = (prevState: IVertex[]) =>
-  prevState.sort(
-    (vertexA, vertexB) =>
-      vertexB.connections.length - vertexA.connections.length
-  )
-
-const sortByIndexLength = (prevState: IVertex[]) =>
+const sortByIndex = (prevState: IVertex[]) =>
   prevState.sort((vertexA, vertexB) => vertexA.index - vertexB.index)
 
-export const welshPowell: TColorize = ({ prevState }) => {
-  let colorizedVertices: IVertex[] = sortByConnectionsLength(prevState)
+export const sequential: TColorize = ({ prevState }) => {
+  let colorizedVertices: IVertex[] = prevState
+  const colors: string[] = []
+
+  colors.push(getRandomColor())
 
   colorizedVertices = updateVertex({
     prevState: colorizedVertices,
     newVertex: { ...colorizedVertices[0], color: colors[0] }
   })
 
-  for (let i = 0; i < colors.length; i++)
+  for (let i = 0; i < colors.length; i++) {
     for (let j = 0; j < colorizedVertices.length; j++) {
       const hasColor = colorizedVertices[j].color
       const isConnectedToColor = colorizedVertices[j].connections.find(
@@ -47,5 +34,11 @@ export const welshPowell: TColorize = ({ prevState }) => {
         })
     }
 
-  return sortByIndexLength(colorizedVertices)
+    const isAllColorized = verifyAllColorized(colorizedVertices)
+
+    !isAllColorized && colors.push(getRandomColor())
+  }
+
+  console.log(colors)
+  return sortByIndex(colorizedVertices)
 }

@@ -2,6 +2,7 @@
 
 import { IGraphProps } from './types'
 
+import { Button } from '../../atoms/Button'
 import { Edges } from './Edges'
 import { Vertices } from './Vertices'
 import { GraphContext, useGraph } from './useGraph'
@@ -21,6 +22,7 @@ export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
     onResetClick,
     onLabelChange,
     onRemoveClick,
+    onSelectChange,
     onColorizeClick,
     onResetColorsClick
   } = useGraph()
@@ -44,15 +46,16 @@ export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
               </h1>
             </div>
 
-            <p className='max-w-[300px] text-white-500'>
+            <p className='max-w-[300px] text-white-500 p-4'>
               <span className='font-bold'>Welsh-Powell:</span> Consiste em
-              ordenar de foma decrescente os vertices por grau (quantidade de
-              conexões), após isso atribui uma cor ao primeiro vértice da lista.
+              ordenar de forma decrescente os vértices por grau (quantidade de
+              conexões). Em seguida, uma cor é atribuída ao primeiro vértice da
+              lista.
               <br />
-              Iterando sobre as cores e os vértices verifico se o vértice está
-              conectado com a cor que esta sendo iterada ou se ja possui cor,
-              caso não possua cor e nao esteja conectado, esta cor é atribuída
-              ao vértice iterado.
+              Iterando sobre as cores e os vértices, verificamos se o vértice
+              está conectado à cor que está sendo iterada ou se já possui uma
+              cor. Caso não possua cor e não esteja conectado, essa cor é
+              atribuída ao vértice em questão.
             </p>
 
             <form onSubmit={onSubmit} className='flex flex-col space-y-4 p-4'>
@@ -64,37 +67,40 @@ export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
                 className='border rounded-md p-3 text-lg shadow-md'
               />
 
-              <button className='bg-info-600 py-3 text-white-500 rounded-xl font-semibold shadow-md  flex items-center justify-center'>
-                <Plus className='w-6 h-6 mr-2 ' />
-                Adicionar
-              </button>
-
-              <button
-                onClick={onColorizeClick}
-                type='button'
-                className='bg-info-600 py-3 text-white-500 rounded-xl font-semibold shadow-md  flex items-center justify-center bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 relative'
+              <select
+                id='algorithm'
+                name='algorithm'
+                onChange={onSelectChange}
+                className='p-4 rounded-md bg-white-50'
               >
-                <div className='w-full h-full rounded-xl opacity-20 bg-black-500 absolute'></div>
+                <option value='welshPowell'>Welsh-Powell</option>
+                <option value='sequential'>Sequencial</option>
+              </select>
+
+              <Button title='Adicionar' type='submit'>
+                <Plus className='w-6 h-6 mr-2 ' />
+              </Button>
+
+              <Button
+                onClick={onColorizeClick}
+                className='bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 relative'
+              >
+                <div className='w-full h-full rounded-xl opacity-20 bg-black-500 absolute' />
                 <Palette className='w-6 h-6 mr-2 relative z-10' />
                 <span className='relative z-10'>Colorir</span>
-              </button>
+              </Button>
 
-              <button
+              <Button
                 onClick={onResetColorsClick}
-                type='button'
-                className='bg-gradient-to-r from-gray-200  via-gray-500 to-black-500 py-3 text-white-500 rounded-xl font-semibold shadow-md  flex items-center justify-center'
+                className='bg-gradient-to-r from-gray-200  via-gray-500 to-black-500'
               >
                 <Palette className='w-6  mr-2 h-6' />
                 Descolorir
-              </button>
+              </Button>
 
-              <button
-                onClick={onResetClick}
-                type='button'
-                className='bg-info-600 py-3 text-white-500 rounded-xl font-semibold shadow-md  flex items-center justify-center bg-red-500'
-              >
+              <Button onClick={onResetClick} className='bg-red-500'>
                 <Trash className='h-6 mr-2 w-6' /> Apagar tudo
-              </button>
+              </Button>
             </form>
           </header>
 

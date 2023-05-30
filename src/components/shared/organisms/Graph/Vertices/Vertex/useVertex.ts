@@ -6,6 +6,8 @@ import { useContext, useImperativeHandle, useState } from 'react'
 
 import colors from 'src/styles/custom/colors'
 
+import { getContrastColor } from 'src/utils/graph/colors/getContrastColor'
+
 import { useMotionValue } from 'framer-motion'
 
 export const useVertex = ({
@@ -23,6 +25,12 @@ export const useVertex = ({
   const motionValue = useMotionValue<IVertexCoords>({ x: 0, y: 0 })
 
   const vertex = { label, connections, index, color }
+
+  const textColor = color
+    ? getContrastColor(color) === 'dark'
+      ? 'black'
+      : 'white'
+    : colors.primary[500]
 
   const onDrag: TOnDrag = (event, info) => {
     const graph = graphRef?.current?.getBoundingClientRect()
@@ -60,11 +68,11 @@ export const useVertex = ({
     onMouseDown,
     vertexStyle: {
       borderWidth: 1,
+      color: textColor,
       width: vertexSize,
       height: vertexSize,
       backgroundColor: color || '#fff',
-      borderColor: color || colors.primary[500],
-      color: color ? '#fff' : colors.primary[500]
+      borderColor: color || colors.primary[500]
     }
   }
 }

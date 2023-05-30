@@ -9,10 +9,11 @@ import colors from 'src/styles/custom/colors'
 
 import { TInput } from 'src/types/react.types'
 
-import { welshPowell } from 'src/utils/graph/colorize'
+import { resetColors } from 'src/utils/graph/colors/resetColors'
+import { sequential } from 'src/utils/graph/colors/sequential'
+import { welshPowell } from 'src/utils/graph/colors/welshPowell'
 import { addVertex } from 'src/utils/graph/vertex/addVertex'
 import { deleteVertex } from 'src/utils/graph/vertex/deleteVertex'
-import { updateVertex } from 'src/utils/graph/vertex/updateVertex'
 
 import { useMotionValue } from 'framer-motion'
 
@@ -21,31 +22,19 @@ export const GraphContext = createContext<IGraphContext>({
   edgeColor: colors.secondary[500]
 })
 
-const resetColors = (prevState: IVertex[]): IVertex[] => {
-  let updatedVertices: IVertex[] = [...prevState]
-
-  for (let i = 0; i < updatedVertices.length; i++)
-    updatedVertices = updateVertex({
-      prevState: updatedVertices,
-      newVertex: {
-        color: undefined,
-        index: updatedVertices[i].index,
-        label: updatedVertices[i].label,
-        connections: updatedVertices[i].connections
-      }
-    })
-
-  return [...updatedVertices]
-}
-
 export const useGraph = () => {
   const [label, setLabel] = useState('')
   const edges = useMotionValue<IEdge[]>([])
   const graphRef = useRef<HTMLDivElement>(null)
   const [vertices, setVertices] = useState<IVertex[]>([])
+  const [algorithm, setAlgorithm] = useState('welshPowell')
 
   const onColorizeClick = () => {
-    setVertices([...welshPowell({ prevState: resetColors(vertices) })])
+    if (algorithm === 'sequential')
+      setVertices([...sequential({ prevState: resetColors(vertices) })])
+
+    if (algorithm === 'welshPowell')
+      setVertices([...welshPowell({ prevState: resetColors(vertices) })])
   }
 
   const onResetColorsClick = () => {
@@ -55,6 +44,10 @@ export const useGraph = () => {
   const onResetClick = () => {
     setVertices([])
     edges.set([])
+  }
+
+  const onSelectChange = (e: any) => {
+    setAlgorithm(e.target.value)
   }
 
   const onSubmit = (e: any) => {
@@ -79,6 +72,7 @@ export const useGraph = () => {
     onResetClick,
     onLabelChange,
     onRemoveClick,
+    onSelectChange,
     onColorizeClick,
     onResetColorsClick
   }
