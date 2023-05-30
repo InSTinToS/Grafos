@@ -9,7 +9,7 @@ import colors from 'src/styles/custom/colors'
 
 import { TInput } from 'src/types/react.types'
 
-import { colorize } from 'src/utils/graph/colorize'
+import { welshPowell } from 'src/utils/graph/colorize'
 import { addVertex } from 'src/utils/graph/vertex/addVertex'
 import { deleteVertex } from 'src/utils/graph/vertex/deleteVertex'
 import { updateVertex } from 'src/utils/graph/vertex/updateVertex'
@@ -45,7 +45,7 @@ export const useGraph = () => {
   const [vertices, setVertices] = useState<IVertex[]>([])
 
   const onColorizeClick = () => {
-    setVertices([...colorize({ prevState: resetColors(vertices) })])
+    setVertices([...welshPowell({ prevState: resetColors(vertices) })])
   }
 
   const onResetColorsClick = () => {

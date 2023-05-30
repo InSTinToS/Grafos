@@ -43,6 +43,18 @@ export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
                 className='border rounded-md p-3 text-lg shadow-md'
               />
 
+              <p className='max-w-[300px] text-white-500'>
+                <span className='font-bold'>Welsh-Powell:</span> Consiste em
+                ordenar de foma decrescente os vertices por grau (quantidade de
+                conexões), após isso atribui uma cor ao primeiro vértice da
+                lista.
+                <br />
+                Iterando sobre as cores e os vértices verifico se o vértice está
+                conectado com a cor que esta sendo iterada ou se ja possui cor,
+                caso não possua cor e nao esteja conectado, esta cor é atribuída
+                ao vértice iterado.
+              </p>
+
               <button className='bg-info-600 py-3 text-white-500 rounded-xl font-semibold shadow-md'>
                 Adicionar
               </button>
