@@ -19,13 +19,13 @@ const colors = [
 const sortByConnectionsLength = (prevState: IVertex[]) =>
   prevState.sort(
     (vertexA, vertexB) =>
-      vertexA.connections.length - vertexB.connections.length
+      vertexB.connections.length - vertexA.connections.length
   )
 
 const sortByIndexLength = (prevState: IVertex[]) =>
   prevState.sort((vertexA, vertexB) => vertexA.index - vertexB.index)
 
-export const colorize: TColorize = ({ prevState }) => {
+export const welshPowell: TColorize = ({ prevState }) => {
   let colorizedVertices: IVertex[] = sortByConnectionsLength(prevState)
 
   colorizedVertices = updateVertex({
