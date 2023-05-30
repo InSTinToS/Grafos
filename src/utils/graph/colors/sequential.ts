@@ -4,7 +4,14 @@ import { verifyAllColorized } from './verifyAllColorized'
 
 import { IVertex } from 'src/components/shared/organisms/Graph/Vertices/Vertex/types'
 
-export type TColorize = (params: { prevState: IVertex[] }) => IVertex[]
+export interface IInfo {
+  colorsQuantity: number
+}
+
+export type TColorize = (params: { prevState: IVertex[] }) => {
+  vertices: IVertex[]
+  info: IInfo
+}
 
 const sortByIndex = (prevState: IVertex[]) =>
   prevState.sort((vertexA, vertexB) => vertexA.index - vertexB.index)
@@ -39,6 +46,8 @@ export const sequential: TColorize = ({ prevState }) => {
     !isAllColorized && colors.push(getRandomColor())
   }
 
-  console.log(colors)
-  return sortByIndex(colorizedVertices)
+  return {
+    info: { colorsQuantity: colors.length },
+    vertices: sortByIndex(colorizedVertices)
+  }
 }

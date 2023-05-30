@@ -10,7 +10,7 @@ import colors from 'src/styles/custom/colors'
 import { TInput } from 'src/types/react.types'
 
 import { resetColors } from 'src/utils/graph/colors/resetColors'
-import { sequential } from 'src/utils/graph/colors/sequential'
+import { IInfo, sequential } from 'src/utils/graph/colors/sequential'
 import { welshPowell } from 'src/utils/graph/colors/welshPowell'
 import { addVertex } from 'src/utils/graph/vertex/addVertex'
 import { deleteVertex } from 'src/utils/graph/vertex/deleteVertex'
@@ -24,17 +24,26 @@ export const GraphContext = createContext<IGraphContext>({
 
 export const useGraph = () => {
   const [label, setLabel] = useState('')
+  const [info, setInfo] = useState<IInfo>()
   const edges = useMotionValue<IEdge[]>([])
   const graphRef = useRef<HTMLDivElement>(null)
   const [vertices, setVertices] = useState<IVertex[]>([])
   const [algorithm, setAlgorithm] = useState('welshPowell')
 
   const onColorizeClick = () => {
-    if (algorithm === 'sequential')
-      setVertices([...sequential({ prevState: resetColors(vertices) })])
+    if (algorithm === 'sequential') {
+      const colorized = sequential({ prevState: resetColors(vertices) })
 
-    if (algorithm === 'welshPowell')
-      setVertices([...welshPowell({ prevState: resetColors(vertices) })])
+      setVertices(colorized.vertices)
+      setInfo({ colorsQuantity: colorized.info.colorsQuantity })
+    }
+
+    if (algorithm === 'welshPowell') {
+      const colorized = welshPowell({ prevState: resetColors(vertices) })
+
+      setVertices(colorized.vertices)
+      setInfo({ colorsQuantity: colorized.info.colorsQuantity })
+    }
   }
 
   const onResetColorsClick = () => {
@@ -67,6 +76,7 @@ export const useGraph = () => {
   const context = { graphRef, edges, vertices, setVertices }
 
   return {
+    info,
     context,
     onSubmit,
     onResetClick,

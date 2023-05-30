@@ -17,6 +17,7 @@ import { Logo } from 'src/assets/images/Logo'
 
 export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
   const {
+    info,
     context,
     onSubmit,
     onResetClick,
@@ -30,9 +31,9 @@ export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
   return (
     <GraphContext.Provider
       value={{
+        ...context,
         vertexSize,
-        edgeColor: edgeColor || colors.secondary[500],
-        ...context
+        edgeColor: edgeColor || colors.secondary[500]
       }}
     >
       <main className='overflow-hidden w-screen h-screen flex'>
@@ -125,6 +126,23 @@ export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
             <Edges />
             <Vertices />
           </div>
+        </section>
+
+        <section className='absolute top-0 right-0 p-4 mr-6'>
+          <header>
+            <span className='text-white-500 text-lg font-semibold'>
+              Informações do Grafo
+            </span>
+
+            <ul>
+              <li className='text-white-500 font-semibold'>
+                <span className='text-white-500 font-normal'>
+                  Quantidade de cores:{' '}
+                </span>
+                {info?.colorsQuantity}
+              </li>
+            </ul>
+          </header>
         </section>
       </main>
     </GraphContext.Provider>
