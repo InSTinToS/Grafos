@@ -35,14 +35,14 @@ export const useGraph = () => {
       const colorized = sequential({ prevState: resetColors(vertices) })
 
       setVertices(colorized.vertices)
-      setInfo({ colorsQuantity: colorized.info.colorsQuantity })
+      setInfo(colorized.info)
     }
 
     if (algorithm === 'welshPowell') {
       const colorized = welshPowell({ prevState: resetColors(vertices) })
 
       setVertices(colorized.vertices)
-      setInfo({ colorsQuantity: colorized.info.colorsQuantity })
+      setInfo(colorized.info)
     }
   }
 

@@ -5,6 +5,7 @@ import { verifyAllColorized } from './verifyAllColorized'
 import { IVertex } from 'src/components/shared/organisms/Graph/Vertices/Vertex/types'
 
 export interface IInfo {
+  type: string
   colorsQuantity: number
 }
 
@@ -46,8 +47,28 @@ export const sequential: TColorize = ({ prevState }) => {
     !isAllColorized && colors.push(getRandomColor())
   }
 
+  let type: string
+
+  const graphNotHaveConnections = colorizedVertices.find(
+    ({ connections }) => connections.length !== 0
+  )
+    ? false
+    : true
+
+  const graphHaveIsolatedVertex = colorizedVertices.find(
+    ({ connections }) => connections.length === 0
+  )
+    ? true
+    : false
+
+  if (graphNotHaveConnections) type = 'Nulo'
+  else if (graphHaveIsolatedVertex) type = 'Não determinado'
+  else if (colorizedVertices.length === colors.length) type = 'Completo'
+  else if (colors.length === 2) type = 'Bipartido não nulo ou Árvore'
+  else type = 'Não determinado'
+
   return {
-    info: { colorsQuantity: colors.length },
+    info: { colorsQuantity: colors.length, type },
     vertices: sortByIndex(colorizedVertices)
   }
 }

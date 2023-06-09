@@ -129,6 +129,13 @@ export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
                 </span>
                 {info?.colorsQuantity}
               </li>
+
+              <li className='text-white-500 font-semibold'>
+                <span className='text-white-500 font-normal'>
+                  Tipo do grafo:{' '}
+                </span>
+                {info?.type}
+              </li>
             </ul>
           </header>
         </section>
