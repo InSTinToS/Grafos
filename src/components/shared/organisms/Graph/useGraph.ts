@@ -69,7 +69,21 @@ export const useGraph = () => {
     setLabel(event.target.value.toUpperCase())
   }
 
+  console.log({ edges: edges.get(), vertices })
+
   const onRemoveClick = (index: number) => {
+    edges.set(
+      edges
+        .get()
+        .filter(
+          ({ vertices }) => !vertices.find(vertex => vertex.index === index)
+        )
+        .map(edge => ({
+          ...edge,
+          vertices: edge.vertices.filter(vertex => vertex.index !== index)
+        }))
+    )
+
     setVertices(deleteVertex({ prevState: vertices, index }))
   }
 

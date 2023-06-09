@@ -2,7 +2,7 @@ export const Logo = ({ className }: any) => {
   return (
     <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
       <rect width="512" height="512" fill="url(#pattern0)" />
-      <rect x="2" y="2" width="508" height="508" rx="254" stroke="white" stroke-width="8" />
+      <rect x="2" y="2" width="508" height="508" rx="254" stroke="white" strokeWidth="8" />
       <defs>
         <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
           <use href="#image0_1_6" transform="scale(0.00195312)" />

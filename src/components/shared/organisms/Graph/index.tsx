@@ -47,18 +47,6 @@ export const Graph = ({ vertexSize = 32, edgeColor }: IGraphProps) => {
               </h1>
             </div>
 
-            <p className='max-w-[300px] text-white-500 p-4'>
-              <span className='font-bold'>Welsh-Powell:</span> Consiste em
-              ordenar de forma decrescente os vértices por grau (quantidade de
-              conexões). Em seguida, uma cor é atribuída ao primeiro vértice da
-              lista.
-              <br />
-              Iterando sobre as cores e os vértices, verificamos se o vértice
-              está conectado à cor que está sendo iterada ou se já possui uma
-              cor. Caso não possua cor e não esteja conectado, essa cor é
-              atribuída ao vértice em questão.
-            </p>
-
             <form onSubmit={onSubmit} className='flex flex-col space-y-4 p-4'>
               <input
                 type='text'

@@ -7,9 +7,9 @@ export const Vertices = () => {
 
   return (
     <ul>
-      {vertices?.map(({ color, index, label }, mapIndex) => (
+      {vertices?.map(({ color, index, label }) => (
         <Vertex
-          key={mapIndex}
+          key={index}
           index={index}
           label={label}
           color={color}
