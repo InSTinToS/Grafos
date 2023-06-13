@@ -1,9 +1,4 @@
-import { IVertex } from '../../../components/shared/organisms/Graph/Vertices/Vertex/types'
-
-type TUpdateVertex = (params: {
-  newVertex: IVertex
-  prevState: IVertex[]
-}) => IVertex[]
+import { TUpdateVertex } from '../types'
 
 export const updateVertex: TUpdateVertex = ({ newVertex, prevState }) => {
   let updatedVertices = [...prevState]

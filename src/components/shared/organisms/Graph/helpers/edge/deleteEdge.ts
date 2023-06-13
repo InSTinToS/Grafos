@@ -1,7 +1,4 @@
-import { IEdge } from '../../../components/shared/organisms/Graph/Edges/types'
-import { IVertex } from '../../../components/shared/organisms/Graph/Vertices/Vertex/types'
-
-type TDeleteEdge = (params: { prev?: IEdge[]; vertices: IVertex[] }) => IEdge[]
+import { TDeleteEdge } from '../types'
 
 export const deleteEdge: TDeleteEdge = ({ vertices, prev }) =>
   prev?.filter(

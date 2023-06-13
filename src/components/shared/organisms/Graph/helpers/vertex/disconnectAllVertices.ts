@@ -1,9 +1,4 @@
-import { IVertex } from '../../../components/shared/organisms/Graph/Vertices/Vertex/types'
-
-type TDisconnectAllVertices = (params: {
-  prevState: IVertex[]
-  index: number
-}) => IVertex[]
+import { TDisconnectAllVertices } from '../types'
 
 export const disconnectAllVertices: TDisconnectAllVertices = ({
   index,

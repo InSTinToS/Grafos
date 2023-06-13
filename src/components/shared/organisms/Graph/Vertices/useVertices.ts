@@ -1,5 +1,12 @@
 import { TVertexRef } from './types'
 
+import { createEdge } from '../helpers/edge/createEdge'
+import { deleteAllEdges } from '../helpers/edge/deleteAllEdges'
+import { deleteEdge } from '../helpers/edge/deleteEdge'
+import { updateAllEdges } from '../helpers/edge/updateAllEdges'
+import { connectVertices } from '../helpers/vertex/connectVertices'
+import { disconnectAllVertices } from '../helpers/vertex/disconnectAllVertices'
+import { disconnectVertices } from '../helpers/vertex/disconnectVertices'
 import { GraphContext } from '../useGraph'
 import {
   IForwardVertex,
@@ -9,14 +16,6 @@ import {
 } from './Vertex/types'
 
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
-
-import { createEdge } from 'src/utils/graph/edge/createEdge'
-import { deleteAllEdges } from 'src/utils/graph/edge/deleteAllEdges'
-import { deleteEdge } from 'src/utils/graph/edge/deleteEdge'
-import { updateAllEdges } from 'src/utils/graph/edge/updateAllEdges'
-import { connectVertices } from 'src/utils/graph/vertex/connectVertices'
-import { disconnectAllVertices } from 'src/utils/graph/vertex/disconnectAllVertices'
-import { disconnectVertices } from 'src/utils/graph/vertex/disconnectVertices'
 
 export const useVertices = () => {
   const refs = useRef<IForwardVertex[]>([])

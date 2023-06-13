@@ -1,4 +1,5 @@
-import { TColorize, sequential } from './sequential'
+import { TColorize } from '../types'
+import { sequential } from './sequential'
 
 import { IVertex } from 'src/components/shared/organisms/Graph/Vertices/Vertex/types'
 

@@ -1,8 +1,4 @@
-import { HTMLAttributes } from 'react'
-
-interface IButtonProps extends HTMLAttributes<HTMLButtonElement> {
-  type?: 'button' | 'submit' | 'reset'
-}
+import { IButtonProps } from './types'
 
 export const Button = ({
   children,

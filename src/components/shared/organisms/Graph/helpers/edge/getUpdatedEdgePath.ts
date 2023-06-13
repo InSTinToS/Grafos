@@ -1,10 +1,4 @@
-import { IForwardVertex } from '../../../components/shared/organisms/Graph/Vertices/Vertex/types'
-
-import { RefObject } from 'react'
-
-type TUpdateEdge = (params: {
-  refs: RefObject<IForwardVertex>['current'][]
-}) => string
+import { TUpdateEdge } from '../types'
 
 export const getUpdatedEdgePath: TUpdateEdge = ({ refs }) => {
   if (!refs[0] || !refs[1]) return ''

@@ -1,9 +1,4 @@
-import { IVertex } from '../../../components/shared/organisms/Graph/Vertices/Vertex/types'
-
-type TAddVertex = (params: {
-  label: IVertex['label']
-  prevState: IVertex[]
-}) => IVertex[]
+import { TAddVertex } from '../types'
 
 export const addVertex: TAddVertex = ({ label, prevState }) => [
   ...prevState,

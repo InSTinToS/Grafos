@@ -1,17 +1,6 @@
-import { IEdge } from '../../../components/shared/organisms/Graph/Edges/types'
-import {
-  IForwardVertex,
-  IVertex
-} from '../../../components/shared/organisms/Graph/Vertices/Vertex/types'
+import { IEdge } from '../../Edges/types'
+import { TCreateEdge } from '../types'
 import { getUpdatedEdgePath } from './getUpdatedEdgePath'
-
-import { RefObject } from 'react'
-
-type TCreateEdge = (params: {
-  prev?: IEdge[]
-  vertices: IVertex[]
-  refs: RefObject<IForwardVertex[]>
-}) => IEdge[]
 
 export const createEdge: TCreateEdge = ({ refs, vertices, prev }) => {
   const edgeAlreadyExists = prev?.find(

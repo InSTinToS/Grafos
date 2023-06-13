@@ -2,18 +2,19 @@ import { IGraphContext } from './types'
 
 import { IEdge } from './Edges/types'
 import { IVertex } from './Vertices/Vertex/types'
+import { IInfo } from './helpers/types'
+import { addVertex } from './helpers/vertex/addVertex'
+import { deleteVertex } from './helpers/vertex/deleteVertex'
 
 import { createContext, useRef, useState } from 'react'
 
 import colors from 'src/styles/custom/colors'
 
-import { TInput } from 'src/types/react.types'
+import { resetColors } from 'src/components/shared/organisms/Graph/helpers/colors/resetColors'
+import { sequential } from 'src/components/shared/organisms/Graph/helpers/colors/sequential'
+import { welshPowell } from 'src/components/shared/organisms/Graph/helpers/colors/welshPowell'
 
-import { resetColors } from 'src/utils/graph/colors/resetColors'
-import { IInfo, sequential } from 'src/utils/graph/colors/sequential'
-import { welshPowell } from 'src/utils/graph/colors/welshPowell'
-import { addVertex } from 'src/utils/graph/vertex/addVertex'
-import { deleteVertex } from 'src/utils/graph/vertex/deleteVertex'
+import { TInput } from 'src/types/react.types'
 
 import { useMotionValue } from 'framer-motion'
 
@@ -30,21 +31,7 @@ export const useGraph = () => {
   const [vertices, setVertices] = useState<IVertex[]>([])
   const [algorithm, setAlgorithm] = useState('welshPowell')
 
-  const onColorizeClick = () => {
-    if (algorithm === 'sequential') {
-      const colorized = sequential({ prevState: resetColors(vertices) })
-
-      setVertices(colorized.vertices)
-      setInfo(colorized.info)
-    }
-
-    if (algorithm === 'welshPowell') {
-      const colorized = welshPowell({ prevState: resetColors(vertices) })
-
-      setVertices(colorized.vertices)
-      setInfo(colorized.info)
-    }
-  }
+  console.log({ edges: edges.get(), vertices })
 
   const onResetColorsClick = () => {
     setVertices([...resetColors(vertices)])
@@ -69,7 +56,21 @@ export const useGraph = () => {
     setLabel(event.target.value.toUpperCase())
   }
 
-  console.log({ edges: edges.get(), vertices })
+  const onColorizeClick = () => {
+    if (algorithm === 'sequential') {
+      const colorized = sequential({ prevState: resetColors(vertices) })
+
+      setVertices(colorized.vertices)
+      setInfo(colorized.info)
+    }
+
+    if (algorithm === 'welshPowell') {
+      const colorized = welshPowell({ prevState: resetColors(vertices) })
+
+      setVertices(colorized.vertices)
+      setInfo(colorized.info)
+    }
+  }
 
   const onRemoveClick = (index: number) => {
     edges.set(

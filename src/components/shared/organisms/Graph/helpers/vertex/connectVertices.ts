@@ -1,15 +1,4 @@
-import { IVertex } from '../../../components/shared/organisms/Graph/Vertices/Vertex/types'
-
-type TConnectVertex = (params: {
-  beforeState: IVertex[]
-  firstIndex: number
-  secondVertex: IVertex
-}) => IVertex[]
-
-type TConnectVertices = (params: {
-  beforeState: IVertex[]
-  vertices: IVertex[]
-}) => IVertex[]
+import { TConnectVertex, TConnectVertices } from '../types'
 
 const connectVertex: TConnectVertex = ({
   beforeState,

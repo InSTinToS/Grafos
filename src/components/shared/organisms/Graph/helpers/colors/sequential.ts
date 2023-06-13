@@ -1,18 +1,10 @@
+import { TColorize } from '../types'
 import { updateVertex } from '../vertex/updateVertex'
-import { getRandomColor } from './getRandomColor'
 import { verifyAllColorized } from './verifyAllColorized'
 
 import { IVertex } from 'src/components/shared/organisms/Graph/Vertices/Vertex/types'
 
-export interface IInfo {
-  type: string
-  colorsQuantity: number
-}
-
-export type TColorize = (params: { prevState: IVertex[] }) => {
-  vertices: IVertex[]
-  info: IInfo
-}
+import { getRandomColor } from 'src/utils/colors/getRandomColor'
 
 const sortByIndex = (prevState: IVertex[]) =>
   prevState.sort((vertexA, vertexB) => vertexA.index - vertexB.index)

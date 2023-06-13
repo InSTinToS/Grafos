@@ -6,7 +6,7 @@ import { useContext, useImperativeHandle, useState } from 'react'
 
 import colors from 'src/styles/custom/colors'
 
-import { getContrastColor } from 'src/utils/graph/colors/getContrastColor'
+import { getContrastColor } from 'src/utils/colors/getContrastColor'
 
 import { useMotionValue } from 'framer-motion'
 

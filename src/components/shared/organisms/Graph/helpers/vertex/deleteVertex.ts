@@ -1,9 +1,4 @@
-import { IVertex } from '../../../components/shared/organisms/Graph/Vertices/Vertex/types'
-
-type TDeleteVertex = (params: {
-  index: number
-  prevState: IVertex[]
-}) => IVertex[]
+import { TDeleteVertex } from '../types'
 
 export const deleteVertex: TDeleteVertex = ({ prevState, index }) =>
   prevState

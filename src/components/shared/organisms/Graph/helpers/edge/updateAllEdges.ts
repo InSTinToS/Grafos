@@ -1,17 +1,5 @@
-import { IEdge } from '../../../components/shared/organisms/Graph/Edges/types'
-import {
-  IForwardVertex,
-  IVertex
-} from '../../../components/shared/organisms/Graph/Vertices/Vertex/types'
+import { TUpdateAllEdges } from '../types'
 import { getUpdatedEdgePath } from './getUpdatedEdgePath'
-
-import { MutableRefObject } from 'react'
-
-type TUpdateAllEdges = (params: {
-  prevState: IEdge[]
-  index: IVertex['index']
-  refs: MutableRefObject<IForwardVertex[]>
-}) => IEdge[]
 
 export const updateAllEdges: TUpdateAllEdges = ({ prevState, index, refs }) => {
   const allEdgesOfVertex = prevState?.filter(({ vertices }) =>
