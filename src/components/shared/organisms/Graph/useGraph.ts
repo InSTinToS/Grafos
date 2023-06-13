@@ -3,8 +3,8 @@ import { IGraphContext } from './types'
 import { IEdge } from './Edges/types'
 import { IVertex } from './Vertices/Vertex/types'
 import { IInfo } from './helpers/types'
-import { addVertex } from './helpers/vertex/addVertex'
-import { deleteVertex } from './helpers/vertex/deleteVertex'
+import { addVertex } from './helpers/vertices/addVertex'
+import { deleteVertex } from './helpers/vertices/deleteVertex'
 
 import { createContext, useRef, useState } from 'react'
 

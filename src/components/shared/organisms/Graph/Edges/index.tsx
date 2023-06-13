@@ -6,12 +6,8 @@ export const Edges = () => {
 
   return (
     <svg className='w-full h-full absolute'>
-      {updated?.map(({ path, vertices }) => (
-        <Edge
-          d={path}
-          stroke={edgeColor}
-          key={vertices[0].index + vertices[1].index}
-        />
+      {updated?.map(({ path }, index) => (
+        <Edge d={path} stroke={edgeColor} key={index} />
       ))}
     </svg>
   )

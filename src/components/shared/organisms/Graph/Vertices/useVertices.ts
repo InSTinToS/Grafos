@@ -1,12 +1,12 @@
 import { TVertexRef } from './types'
 
-import { createEdge } from '../helpers/edge/createEdge'
-import { deleteAllEdges } from '../helpers/edge/deleteAllEdges'
-import { deleteEdge } from '../helpers/edge/deleteEdge'
-import { updateAllEdges } from '../helpers/edge/updateAllEdges'
-import { connectVertices } from '../helpers/vertex/connectVertices'
-import { disconnectAllVertices } from '../helpers/vertex/disconnectAllVertices'
-import { disconnectVertices } from '../helpers/vertex/disconnectVertices'
+import { createEdge } from '../helpers/edges/createEdge'
+import { deleteAllEdges } from '../helpers/edges/deleteAllEdges'
+import { deleteEdge } from '../helpers/edges/deleteEdge'
+import { updateAllEdges } from '../helpers/edges/updateAllEdges'
+import { connectVertices } from '../helpers/vertices/connectVertices'
+import { disconnectAllVertices } from '../helpers/vertices/disconnectAllVertices'
+import { disconnectVertices } from '../helpers/vertices/disconnectVertices'
 import { GraphContext } from '../useGraph'
 import {
   IForwardVertex,
@@ -22,10 +22,11 @@ export const useVertices = () => {
   const [selected, setSelected] = useState<number[]>([])
   const { edges, vertices, setVertices, graphRef } = useContext(GraphContext)
 
-  const selectedTw = (index: number) =>
-    selected.findIndex(selected => selected === index) + 1
+  const selectedTw = (index: number) => {
+    return selected.findIndex(selected => selected === index) + 1
       ? 'outline-secondary-500 outline-2 outline'
       : ''
+  }
 
   const vertexRef: TVertexRef = (ref, index) => {
     if (ref) refs.current[index] = ref
@@ -33,16 +34,12 @@ export const useVertices = () => {
 
   const onDrag: IVertexProps['onDrag'] = (_event, _info, vertex) => {
     edges?.set(
-      updateAllEdges({
-        refs,
-        index: vertex.index,
-        prevState: edges.get()
-      })
+      updateAllEdges({ refs, index: vertex.index, prevState: edges.get() })
     )
   }
 
   const onMouseDown: TOnVertexMouseDown = (event, vertex) => {
-    event.ctrlKey &&
+    if (event.ctrlKey) {
       setSelected(prev => {
         const newSelected = vertex.index
 
@@ -54,8 +51,7 @@ export const useVertices = () => {
 
         return [...prev, newSelected]
       })
-
-    if (event.altKey) {
+    } else if (event.altKey) {
       setSelected([])
 
       setVertices &&

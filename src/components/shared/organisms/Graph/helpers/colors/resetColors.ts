@@ -1,4 +1,4 @@
-import { updateVertex } from '../vertex/updateVertex'
+import { updateVertex } from '../vertices/updateVertex'
 
 import { IVertex } from 'src/components/shared/organisms/Graph/Vertices/Vertex/types'
 
